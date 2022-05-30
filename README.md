@@ -22,7 +22,7 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
 
 ### Installing
 
-$ ansible-galaxy install ramuskay.check_mk_agent_full
+	ansible-galaxy install ramuskay.check_mk_agent_full
 
 ### Variables
 
