@@ -1,4 +1,5 @@
 # Ansible-role-check-mk-agent-full
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-ramuskay.check__mk__agent__full-blue)](https://galaxy.ansible.com/ramuskay/ansible_role_check_mk_api_agent)
 
 The purpose of the Ansible role is to insatll, configure a check_mk agent on a host and add this host to a check_mk server
 
@@ -17,6 +18,7 @@ This role do the following :
 
 * Python 2.6+
 * Python module `requests`
+* WARNING: Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
 
 Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
 
@@ -65,7 +67,7 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
