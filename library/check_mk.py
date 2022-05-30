@@ -193,7 +193,7 @@ def run_module():
         state = dict(type='str',default="present"),
         activate_changes= dict(type='bool',default=True), 
         trustcerts= dict(type='bool', default=True),
-        discover_services = dict(type='str',choices=["new", "remove", "fixall", "refresh","None"],default=None) #Voir doc API pour lister les options possible    
+        discover_services = dict(type='str',choices=["new", "remove", "fixall", "refresh",""],default="") #Voir doc API pour lister les options possible    
     )
 
     result = dict(
@@ -220,7 +220,7 @@ def run_module():
         result['create']=obj.createHost()
         obj.discover_services = "new"
         obj.discoveryHost()
-    elif module.params['discover_services'] != None: 
+    elif module.params['discover_services'] != "": 
         obj.discoveryHost()
 
     
