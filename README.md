@@ -20,7 +20,7 @@ This role do the following :
 * Python module `requests`
 * WARNING: Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
 
-Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
+Tested on Ubuntu 18+, Debian 10+ and CentOS 7+. WARNING : It is beta-testing for DebianBase, for RHEL base it's production ready
 
 ### Installing
 
