@@ -1,0 +1,5 @@
+
+- name: restart checkmk
+  systemd:
+    name: cmk-agent-ctl-daemon
+    state: restarted
