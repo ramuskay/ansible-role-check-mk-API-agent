@@ -1,5 +1,9 @@
-
 - name: restart checkmk
   systemd:
     name: cmk-agent-ctl-daemon
+    state: restarted
+
+- name: restart firewalld
+  systemd:
+    name: firewalld
     state: restarted

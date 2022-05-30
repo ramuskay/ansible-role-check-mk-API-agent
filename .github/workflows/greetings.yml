@@ -1,0 +1,19 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    environment: PROD
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    # Use a GitHub Actions secret variable in a bash shell
+    - name: Step 2 - GitHub Action if statement (true)
+      run: echo '${{ secrets.CHECK_MK_API_HOSTNAME }}'
+
+      
+
+

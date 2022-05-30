@@ -11,4 +11,4 @@ check_mk_api_secret:
 check_mk_api_folder: "/"
 check_mk_api_state: "present"
 check_mk_api_activate_changes: True
-check_mk_api_discover_services: None
+check_mk_api_discover_services: ""

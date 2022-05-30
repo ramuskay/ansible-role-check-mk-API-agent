@@ -1,5 +1,6 @@
 # Ansible-role-check-mk-agent-full
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-ramuskay.check__mk__agent__full-blue)](https://galaxy.ansible.com/ramuskay/ansible_role_check_mk_api_agent)
+[![CI](https://github.com/ramuskay/ansible_role_check_mk_agent_full/actions/workflows/ci.yml/badge.svg)](https://github.com/ramuskay/ansible_role_check_mk_agent_full/actions/workflows/ci.yml)
 
 The purpose of the Ansible role is to insatll, configure a check_mk agent on a host and add this host to a check_mk server
 
@@ -14,19 +15,19 @@ This role do the following :
 
 ## Getting Started
 
-### Requirements
+### ⚙️ Requirements
 
 * Python 2.6+
 * Python module `requests`
-* WARNING: Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
+* WARNING - Only for version 2.1.X of CheckMK : Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
 
-Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
+Tested on Ubuntu 18+, Debian 10+ and CentOS 7+. WARNING : It is beta-testing for DebianBase, for RHEL base it's production ready
 
-### Installing
+### 💾 Installing
 
 	ansible-galaxy install ramuskay.check_mk_agent_full
 
-### Variables
+### ✏️ Variables
 
 * `check_mk_package: check-mk-agent` You can use a different name corresponding on your repo or an URL
 * `check_mk_firewall: true` Add rule on the local firewall (firewalld for RHEL, ufw for Debian)
@@ -39,10 +40,10 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
 * `check_mk_api_folder: "/"` Indicate which check_mk folder you want to put your host in. Relevant if check_mk_api_add_host is true  
 * `check_mk_api_state: "present"` Indicate if you want to add or delete an your host on checkmk. Relevant if check_mk_api_add_host is true 
 * `check_mk_api_activate_changes: True` Indicate if you want to apply the changes done before. Relevant if check_mk_api_add_host is true 
-* `check_mk_api_discover_services:` Indicate the style of discover you want to make (if you want to). See module doc. Relevant if check_mk_api_add_host is true 
+* `check_mk_api_discover_services: ""` Indicate the style of discover you want to make (if you want to). See module doc. If the host doe not exist it will be new automatically, if you play again the playbook and the host exist it will be None by default. Relevant if check_mk_api_add_host is true 
 * `check_mk_local_checks: []` Need name parameter and url or src parameter. See example. Relevant if check_mk_api_add_host is true 
 
-### Examples
+### 👨‍🏫 Examples
 
 ```yaml
 - hosts: all
@@ -61,11 +62,11 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
      - ramuskay.check_mk_agent_full
 ```
 
-## Authors
+## 🧔 Authors
 
 [ramuskay](https://github.com/ramuskay) <aurel@beerus.fr>
 
-## License
+## 📚 License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
 

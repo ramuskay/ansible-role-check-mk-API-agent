@@ -9,10 +9,11 @@
           - firewalld
       when: ansible_os_family == 'RedHat'
 
-    # - name: install pre-package Debian
-    #   package:
-    #     name: ufw
-    #   when: ansible_os_family == 'Debian'
+    - name: install pre-package Debian
+      package:
+        name: ufw
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
 
     - name: "Include acme.check_mk"
       include_role:

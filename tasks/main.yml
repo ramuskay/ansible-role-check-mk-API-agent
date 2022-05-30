@@ -17,12 +17,44 @@
     - "{{ check_mk_package }}"
   when: ansible_os_family == 'Debian' and check_mk_package is match("^http.*") 
 
-- name: Start and enable check-mk-agent.socket
-  systemd:
-    name: check-mk-agent.socket
-    daemon_reload: true
-    state: started
-    enabled: true
+- name: Retrieve service facts
+  service_facts:
+
+
+- name: systemd socket activation for 2.1+
+  block:
+  - name: Start and enable check-mk-agent-async.service
+    systemd:
+      name: check-mk-agent-async.service
+      daemon_reload: true
+      state: started
+      enabled: true
+
+  - name: Verif file legacy
+    stat:
+      path: /var/lib/cmk-agent/allow-legacy-pull
+    register: stat_result
+
+  - name: Enable legacy mode
+    file:
+      path: /var/lib/cmk-agent/allow-legacy-pull
+      mode: '0644'
+      state: touch
+    when: not stat_result.stat.exists
+    notify: restart checkmk
+
+  when: ansible_facts.services['check-mk-agent-async.service'] is defined
+
+- name: systemd socket activation for 2.0 or earlier
+  block:
+  - name: Start and enable check_mk-async.service
+    systemd:
+      name: check_mk-async.service
+      daemon_reload: true
+      state: started
+      enabled: true
+
+  when: ansible_facts.services['check_mk-async.service'] is defined
 
 - name: open Firewall RHEL base
   firewalld:
@@ -35,22 +67,9 @@
 - name: open Firewall Debian
   ufw:
     rule: allow
-    port: 6556/tcp
+    port: 6556
     proto: tcp
   when: check_mk_firewall and ansible_os_family == 'Debian'
-
-- name: Verif file legacy
-  stat:
-    path: /var/lib/cmk-agent/allow-legacy-pull
-  register: stat_result
-
-- name: Enable legacy mode
-  file:
-    path: /var/lib/cmk-agent/allow-legacy-pull
-    mode: '0644'
-    state: touch
-  when: not stat_result.stat.exists
-  notify: restart checkmk
 
 - name: Add local check with file
   copy: 
@@ -77,10 +96,11 @@
     url: "{{ check_mk_api_url }}"
     username: "{{ check_mk_api_username }}"
     secret: "{{ check_mk_api_secret }}"
-    state: "{{ check_mk_api_state }}"
-    folder: "{{ check_mk_api_folder }}"
-    activate_changes: "{{ check_mk_api_activate_changes }}"
-    discover_services: "{{ check_mk_api_discover_services }}"
-    trustcerts: "{{ check_mk_certs_trust }}"
+    attributes: "{{ check_mk_api_attributes | default(omit) }}"
+    state: "{{ check_mk_api_state | default(omit) }}"
+    folder: "{{ check_mk_api_folder | default(omit) }}"
+    activate_changes: "{{ check_mk_api_activate_changes | default(omit) }}"
+    discover_services: "{{ check_mk_api_discover_services | default(omit) }}"
+    trustcerts: "{{ check_mk_certs_trust | default(omit) }}"
   delegate_to: localhost
   when: check_mk_api_add_host
