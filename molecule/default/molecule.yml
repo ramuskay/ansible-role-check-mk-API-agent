@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: geerlingguy/docker-rockylinux8-ansible:latest
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    published_ports: 6556/tcp
+    pre_build_image: true
+  - name: instance2
+    image: geerlingguy/docker-ubuntu2004-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    published_ports: 6556/tcp
+    pre_build_image: true
+  - name: instance3
+    image: geerlingguy/docker-debian10-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    published_ports: 6556/tcp
+    pre_build_image: true
+
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

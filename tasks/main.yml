@@ -1,0 +1,72 @@
+- name: Install check_mk package for RedHat base or Debian Base not URL
+  package:
+    name: "{{ item }}"
+    state: present
+    disable_gpg_check: true
+    validate_certs: "{{ check_mk_certs_trust }}"
+  with_items:
+    - "{{ check_mk_package }}"
+  when: ansible_os_family == 'RedHat' or check_mk_package is not match("^http.*") 
+  
+- name: Install check_mk package for Debian base with URL
+  package:
+    deb: "{{ item }}"
+    state: present
+    force: yes
+  with_items:
+    - "{{ check_mk_package }}"
+  when: ansible_os_family == 'Debian' and check_mk_package is match("^http.*") 
+
+- name: Start and enable check-mk-agent.socket
+  systemd:
+    name: check-mk-agent.socket
+    daemon_reload: true
+    state: started
+    enabled: true
+
+- name: open Firewall RHEL base
+  ansible.posix.firewalld:
+    port: 6556/tcp
+    permanent: yes
+    state: enabled
+  when: check_mk_firewall and ansible_os_family == 'RedHat'
+
+- name: open Firewall Debian
+  community.general.ufw:
+    rule: allow
+    port: 6556/tcp
+    proto: tcp
+  when: check_mk_firewall and ansible_os_family == 'Debian'
+
+- name: Add local check with file
+  copy: 
+    src: "{{ item.src }}"
+    dest:  /usr/lib/check_mk_agent/local/
+    mode: '0744'
+  loop: "{{ check_mk_local_checks }}"
+  when: check_mk_local_checks is defined and item.src is defined
+
+
+- name: Add local check with URL
+  get_url:
+    url: "{{ item.url }}"
+    dest: /usr/lib/check_mk_agent/local/
+    mode: '0744'
+    validate_certs: "{{ check_mk_certs_trust }}"
+  loop: "{{ check_mk_local_checks }}"
+  when: check_mk_local_checks is defined and item.url is defined
+
+
+- name : Add host to check_mk server
+  check_mk:
+    hostname: "{{ check_mk_api_hostname }}"
+    url: "{{ check_mk_api_url }}"
+    username: "{{ check_mk_api_username }}"
+    secret: "{{ check_mk_api_secret }}"
+    state: "{{ check_mk_api_state }}"
+    folder: "{{ check_mk_api_folder }}"
+    activate_changes: "{{ check_mk_api_activate_changes }}"
+    discover_services: "{{ check_mk_api_discover_services }}"
+    trustcerts: "{{ check_mk_certs_trust }}"
+  delegate_to: localhost
+  when: check_mk_api_add_host

@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: install pre-package RHEL
+      package:
+        name:  
+          - iproute
+          - firewalld
+      when: ansible_os_family == 'RedHat'
+
+    # - name: install pre-package Debian
+    #   package:
+    #     name: ufw
+    #   when: ansible_os_family == 'Debian'
+
+    - name: "Include acme.check_mk"
+      include_role:
+        name: "acme.check_mk"

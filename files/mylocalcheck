@@ -1,0 +1,3 @@
+#!/bin/bash
+# This is an example
+echo "0 \"My 1st service\" - This static service is always OK"
