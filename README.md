@@ -39,7 +39,7 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+
 * `check_mk_api_folder: "/"` Indicate which check_mk folder you want to put your host in. Relevant if check_mk_api_add_host is true  
 * `check_mk_api_state: "present"` Indicate if you want to add or delete an your host on checkmk. Relevant if check_mk_api_add_host is true 
 * `check_mk_api_activate_changes: True` Indicate if you want to apply the changes done before. Relevant if check_mk_api_add_host is true 
-* `check_mk_api_discover_services: None` Indicate the style of discover you want to make (if you want to). See module doc. If the host doe not exist it will be new automatically, if you play again the playbook and the host exist it will be None by default. Relevant if check_mk_api_add_host is true 
+* `check_mk_api_discover_services: ""` Indicate the style of discover you want to make (if you want to). See module doc. If the host doe not exist it will be new automatically, if you play again the playbook and the host exist it will be None by default. Relevant if check_mk_api_add_host is true 
 * `check_mk_local_checks: []` Need name parameter and url or src parameter. See example. Relevant if check_mk_api_add_host is true 
 
 ### Examples
