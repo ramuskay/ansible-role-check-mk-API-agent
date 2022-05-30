@@ -38,6 +38,19 @@
     proto: tcp
   when: check_mk_firewall and ansible_os_family == 'Debian'
 
+- name: Verif file legacy
+  stat:
+    path: /var/lib/cmk-agent/allow-legacy-pull
+  register: stat_result
+
+- name: Enable legacy mode
+  file:
+    path: /var/lib/cmk-agent/allow-legacy-pull
+    mode: '0644'
+    state: touch
+  when: not stat_result.stat.exists
+  notify: restart checkmk
+
 - name: Add local check with file
   copy: 
     src: "{{ item.src }}"
@@ -57,7 +70,7 @@
   when: check_mk_local_checks is defined and item.url is defined
 
 
-- name : Add host to check_mk server
+- name: Add host to check_mk server
   check_mk:
     hostname: "{{ check_mk_api_hostname }}"
     url: "{{ check_mk_api_url }}"
