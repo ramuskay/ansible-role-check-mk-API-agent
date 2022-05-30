@@ -1,0 +1,14 @@
+---
+# defaults file for check_mk
+check_mk_package: "check-mk-agent"
+check_mk_firewall: true
+check_mk_certs_trust: true
+check_mk_api_add_host: true
+check_mk_api_hostname: 
+check_mk_api_url: 
+check_mk_api_username: 
+check_mk_api_secret: 
+check_mk_api_folder: "/"
+check_mk_api_state: "present"
+check_mk_api_activate_changes: True
+check_mk_api_discover_services: refresh
