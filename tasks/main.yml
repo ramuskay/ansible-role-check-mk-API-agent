@@ -25,14 +25,15 @@
     enabled: true
 
 - name: open Firewall RHEL base
-  ansible.posix.firewalld:
+  firewalld:
     port: 6556/tcp
     permanent: yes
     state: enabled
+  notify: restart firewalld
   when: check_mk_firewall and ansible_os_family == 'RedHat'
 
 - name: open Firewall Debian
-  community.general.ufw:
+  ufw:
     rule: allow
     port: 6556/tcp
     proto: tcp
