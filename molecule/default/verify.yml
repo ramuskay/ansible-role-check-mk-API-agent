@@ -14,10 +14,10 @@
 
   - name: Verify Packages
     assert:
-      that: "check-mk-agent in ansible_facts.packages"
+      that: "'check-mk-agent' in ansible_facts.packages"
 
   
-  - name: Verify firewalld + service listen ok
+  - name: Verify service listen ok
     wait_for:
       port: 6556
       timeout: 3
