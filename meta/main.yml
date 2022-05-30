@@ -38,6 +38,8 @@ galaxy_info:
     versions:
     - 10
 
+  galaxy_info:
+    role_name: check_mk_agent_full
   galaxy_tags: 
     - monitoring
     - check_mk
