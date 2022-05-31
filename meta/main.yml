@@ -26,17 +26,17 @@ galaxy_info:
   # To view available platforms and versions (or releases), visit:
   # https://galaxy.ansible.com/api/v1/platforms/
   #
-  # platforms:
-  # - name: Centos
-  #   versions:
-  #   - 7
-  #   - 8
-  # - name: Ubuntu
-  #   versions:
-  #   - 20
-  # - name: Debian
-  #   versions:
-  #   - 10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - buster
+    - name: EL
+      versions:
+        - 7
+
   galaxy_info:
     role_name: check_mk_agent_full
   galaxy_tags: 
