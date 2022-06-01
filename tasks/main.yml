@@ -35,7 +35,7 @@
 - name: open Firewall Debian
   ufw:
     rule: allow
-    port: 6556/tcp
+    port: 6556
     proto: tcp
   when: check_mk_firewall and ansible_os_family == 'Debian'
 
