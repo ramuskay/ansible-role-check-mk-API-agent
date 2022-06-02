@@ -14,19 +14,19 @@ This role do the following :
 
 ## Getting Started
 
-### Requirements
+### ⚙️ Requirements
 
 * Python 2.6+
 * Python module `requests`
-* WARNING: Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
+* WARNING - Only for version 2.1.X of CheckMK : Due to an active bug discoverservice API REST is not working, so to workarround I am using the legacy web api. So you have to enable it in check server if you plan to add your host on Check_mk with this role you will have to do this. See this link to do so : https://checkmk.com/werk/13640
 
 Tested on Ubuntu 18+, Debian 10+ and CentOS 7+. WARNING : It is beta-testing for DebianBase, for RHEL base it's production ready
 
-### Installing
+### 💾 Installing
 
 	ansible-galaxy install ramuskay.check_mk_agent_full
 
-### Variables
+### ✏️ Variables
 
 * `check_mk_package: check-mk-agent` You can use a different name corresponding on your repo or an URL
 * `check_mk_firewall: true` Add rule on the local firewall (firewalld for RHEL, ufw for Debian)
@@ -42,7 +42,7 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+. WARNING : It is beta-testing for
 * `check_mk_api_discover_services: ""` Indicate the style of discover you want to make (if you want to). See module doc. If the host doe not exist it will be new automatically, if you play again the playbook and the host exist it will be None by default. Relevant if check_mk_api_add_host is true 
 * `check_mk_local_checks: []` Need name parameter and url or src parameter. See example. Relevant if check_mk_api_add_host is true 
 
-### Examples
+### 👨‍🏫 Examples
 
 ```yaml
 - hosts: all
@@ -61,11 +61,11 @@ Tested on Ubuntu 18+, Debian 10+ and CentOS 7+. WARNING : It is beta-testing for
      - ramuskay.check_mk_agent_full
 ```
 
-## Authors
+## 🧔 Authors
 
 [ramuskay](https://github.com/ramuskay) <aurel@beerus.fr>
 
-## License
+## 📚 License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
