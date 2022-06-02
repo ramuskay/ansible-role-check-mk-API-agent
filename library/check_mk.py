@@ -147,7 +147,11 @@ class CMK:
     
     def createHost(self):
         url = f"{self.api}/domain-types/host_config/collections/all"
-        json = json={'folder': self.folder,'host_name': self.hostname}
+        json={'host_name' : self.hostname}
+        if self.folder:
+            json['folder'] = self.folder
+        if self.attributes:
+            json['attributes'] = self.attributes
         self.changed = True
         return self.apiAction(url,json=json)
 
@@ -160,15 +164,15 @@ class CMK:
     def discoveryHost(self):
 
         ## It doesn't work with Checkmk Free Edition 2.1.0b9
-        # resp = self.session.post(
-        #     f"{self.api}/objects/host/{self.hostname}/actions/discover_services/invoke",
-        #     headers={
-        #         "Content-Type": 'application/json',  # (required) A header specifying which type of content is in the request/response body.
-        #     },
-        #     json={'mode': self.discover_services},
-        #     #json={'mode': 'refresh'},
-        # )
-        resp = self.websession.post(self.api_web + "&action=discover_services&mode=" + self.discover_services, data={"hostname": self.hostname},verify=self.trustcerts,)
+        ## See https://forum.checkmk.com/t/rest-api-problem-with-service-discovery/31724
+        resp = self.session.post(
+            f"{self.api}/objects/host/{self.hostname}/actions/discover_services/invoke",
+            headers={
+                "Content-Type": 'application/json',  # (required) A header specifying which type of content is in the request/response body.
+            },
+            json={'mode': self.discover_services}
+        )
+        # resp = self.websession.post(self.api_web + "&action=discover_services&mode=" + self.discover_services, data={"hostname": self.hostname},verify=self.trustcerts,)
                 
         if resp.status_code == 200 or resp.status_code == 204:
             self.changed = True
@@ -185,15 +189,16 @@ class CMK:
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        hostname = dict(type='str',require=True), #"lab.beerus.fr"
-        url = dict(type='str',require=True), #"http://lab.beerus.fr/tesqt"
-        username = dict(type='str',require=True), #"automation"
-        secret = dict(type='str',require=True), #"EGP@VEUNJDTJCLPMHIEP"
+        hostname = dict(type='str',require=True), 
+        url = dict(type='str',require=True), 
+        username = dict(type='str',require=True), 
+        secret = dict(type='str',require=True), 
         folder = dict(type='str', default="/"),
+        attributes = dict(type="dict"),
         state = dict(type='str',default="present"),
         activate_changes= dict(type='bool',default=True), 
         trustcerts= dict(type='bool', default=True),
-        discover_services = dict(type='str',choices=["new", "remove", "fixall", "refresh",""],default="") #Voir doc API pour lister les options possible    
+        discover_services = dict(type='str',choices=["new", "remove", "fixall", "refresh"]) 
     )
 
     result = dict(
@@ -220,7 +225,7 @@ def run_module():
         result['create']=obj.createHost()
         obj.discover_services = "new"
         obj.discoveryHost()
-    elif module.params['discover_services'] != "": 
+    elif module.params['discover_services']: 
         obj.discoveryHost()
 
     
