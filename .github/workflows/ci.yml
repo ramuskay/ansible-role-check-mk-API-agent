@@ -63,9 +63,8 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
           MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
-        with:
-          check_mk_api_hostname: ${{ secrets.check_mk_api_hostname }}
-          check_mk_api_url: ${{ secrets.check_mk_api_url }} 
-          check_mk_api_username: ${{ secrets.check_mk_api_username }} 
-          check_mk_api_secret: ${{ secrets.check_mk_api_secret }} 
+          check_mk_api_hostname: ${{ secrets.CHECK_MK_API_HOSTNAME }}
+          check_mk_api_url: ${{ secrets.CHECK_MK_API_URL }} 
+          check_mk_api_username: ${{ secrets.CHECK_MK_API_USERNAME }} 
+          check_mk_api_secret: ${{ secrets.CHECK_MK_API_SECRET }} 
 
