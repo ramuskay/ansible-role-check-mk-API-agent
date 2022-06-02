@@ -1,70 +1,16 @@
-name: CI
+name: Greetings
 
-on: [push]
+on: [pull_request_target, issues]
 
 jobs:
-
-  build:
+  greeting:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint ansible requests
-    - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py')
-
-  molecule:
-    name: Molecule
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - distro: rockylinux8
-            playbook: converge.yml
-          - distro: fedora33
-            playbook: converge.yml
-          - distro: ubuntu2004
-            playbook: converge.yml
-          - distro: ubuntu1804
-            playbook: converge.yml
-          - distro: debian10
-            playbook: converge.yml
-          - distro: rockylinux8
-            playbook: pip.yml
-
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'geerlingguy.ansible'
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
-
-      - name: Run Molecule tests.
-        run: molecule test
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.distro }}
-          MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
-          check_mk_api_hostname: ${{ secrets.CHECK_MK_API_HOSTNAME }}
-          check_mk_api_url: ${{ secrets.CHECK_MK_API_URL }} 
-          check_mk_api_username: ${{ secrets.CHECK_MK_API_USERNAME }} 
-          check_mk_api_secret: ${{ secrets.CHECK_MK_API_SECRET }} 
-
+    # Use a GitHub Actions secret variable in a bash shell
+    - name: Step 2 - GitHub Action if statement (true)
+      env: 
+        WHO_TO_TRUST: ${{ secrets.CHECK_MK_API_HOSTNAME }}
+      run: echo env.WHO_TO_TRUST
