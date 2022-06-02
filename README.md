@@ -1,5 +1,6 @@
 # Ansible-role-check-mk-agent-full
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-ramuskay.check__mk__agent__full-blue)](https://galaxy.ansible.com/ramuskay/ansible_role_check_mk_api_agent)
+[![CI](https://github.com/ramuskay/ansible_role_check_mk_agent_full/actions/workflows/ci.yml/badge.svg)](https://github.com/ramuskay/ansible_role_check_mk_agent_full/actions/workflows/ci.yml)
 
 The purpose of the Ansible role is to insatll, configure a check_mk agent on a host and add this host to a check_mk server
 
