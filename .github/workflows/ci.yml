@@ -13,4 +13,4 @@ jobs:
     - name: Step 2 - GitHub Action if statement (true)
       env: 
         WHO_TO_TRUST: ${{ secrets.CHECK_MK_API_HOSTNAME }}
-      run: echo env.WHO_TO_TRUST
+      run: echo env.CHECK_MK_API_HOSTNAME
