@@ -14,3 +14,5 @@ jobs:
       env: 
         WHO_TO_TRUST: ${{ secrets.CHECK_MK_API_HOSTNAME }}
       run: echo env.WHO_TO_TRUST
+
+
