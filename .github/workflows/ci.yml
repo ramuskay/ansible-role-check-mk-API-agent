@@ -3,6 +3,7 @@ name: CI
 on: [push]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -21,3 +22,50 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - distro: rockylinux8
+            playbook: converge.yml
+          - distro: fedora33
+            playbook: converge.yml
+          - distro: ubuntu2004
+            playbook: converge.yml
+          - distro: ubuntu1804
+            playbook: converge.yml
+          - distro: debian10
+            playbook: converge.yml
+          - distro: rockylinux8
+            playbook: pip.yml
+
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+        with:
+          path: 'geerlingguy.ansible'
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible molecule[docker] docker
+
+      - name: Run Molecule tests.
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
+        with:
+          check_mk_api_hostname: ${{ secrets.check_mk_api_hostname }}
+          check_mk_api_url: ${{ secrets.check_mk_api_url }} 
+          check_mk_api_username: ${{ secrets.check_mk_api_username }} 
+          check_mk_api_secret: ${{ secrets.check_mk_api_secret }} 
+
